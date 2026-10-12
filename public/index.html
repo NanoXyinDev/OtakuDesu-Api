@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kitsune API – data anime sub Indo dalam JSON</title>
+  <meta name="description" content="API REST tidak resmi untuk mencari anime, mengambil daftar episode, link nonton, dan link unduh. JSON, tanpa API key, CORS terbuka.">
+  <meta name="theme-color" content="#ff4d8d">
+  <meta property="og:title" content="Kitsune API – data anime sub Indo dalam JSON">
+  <meta property="og:description" content="Dua sumber (Otakudesu dan Samehadaku), satu API. JSON, tanpa API key, CORS terbuka.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M4 4l8 6h8l8-6v12c0 7-6 12-12 12S4 23 4 16z' fill='%23ff4d8d' stroke='%231a1640' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preload" href="/fonts/dela-gothic-one-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <script>try{var t=localStorage.getItem("kitsune-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Lewati ke konten</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="logo" href="/" aria-label="Kitsune API, beranda">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 4l8 6h8l8-6v12c0 7-6 12-12 12S4 23 4 16z" fill="#ff4d8d" stroke="#1a1640" stroke-width="2" stroke-linejoin="round"/><path d="M10 17.5l3 1.5M22 17.5l-3 1.5" stroke="#1a1640" stroke-width="2" stroke-linecap="round"/><path d="M14.5 23h3l-1.5 1.8z" fill="#1a1640"/></svg>
+        Kitsune <small>API</small>
+      </a>
+      <nav class="nav" aria-label="Utama">
+        <a href="/docs">Dokumentasi</a>
+        <a class="hide-sm" href="#coba">Coba</a>
+        <a class="hide-sm" href="/api/openapi.json">OpenAPI</a>
+        <a href="/account" data-account>Masuk</a>
+        <button class="icon-btn" type="button" data-theme-toggle></button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="judul">
+      <div class="wrap">
+        <div>
+          <h1 id="judul">Data anime sub Indo, lewat satu API.</h1>
+          <p class="lead">Cari judul, ambil daftar episode, lalu buka link nonton dan unduh. Semua dalam JSON, dari dua sumber sekaligus. Bisa dipakai langsung dari browser; daftar gratis untuk API key dan batas lebih besar.</p>
+          <div class="cta">
+            <a class="btn btn-primary" href="/docs">Baca dokumentasi</a>
+            <a class="btn" href="#mulai">Lihat cara pakai</a>
+          </div>
+          <ul class="facts" aria-label="Ringkasan">
+            <li>27 endpoint</li>
+            <li class="live" id="srcStatus">2 sumber</li>
+            <li>Login + API key</li>
+            <li>CORS terbuka</li>
+            <li>Cache 5 menit</li>
+            <li>OpenAPI 3</li>
+          </ul>
+        </div>
+
+        <div class="panel demo" id="coba" role="region" aria-label="Coba API langsung">
+          <span class="sticker" aria-hidden="true">2 sumber!</span>
+          <div class="src-switch" role="group" aria-label="Sumber data">
+            <button type="button" data-src="otakudesu" aria-pressed="true">Otakudesu</button>
+            <button type="button" data-src="samehadaku" aria-pressed="false">Samehadaku</button>
+          </div>
+          <form class="demo-bar" id="demoForm" autocomplete="off">
+            <span class="verb">GET</span>
+            <label class="demo-path" for="demoQ" id="demoPath">/api/search?q=</label>
+            <input id="demoQ" name="q" value="oni" spellcheck="false" aria-label="Kata kunci pencarian">
+            <button class="btn btn-primary btn-sm" type="submit" id="demoGo">Kirim</button>
+          </form>
+          <div class="demo-meta">
+            <span id="demoStatus" aria-live="polite">Memuat contoh…</span>
+            <div class="seg" role="group" aria-label="Tampilan hasil">
+              <button type="button" data-view="cards" aria-pressed="true">Kartu</button>
+              <button type="button" data-view="json" aria-pressed="false">JSON</button>
+            </div>
+          </div>
+          <div class="demo-body" id="demoBody" tabindex="-1"></div>
+          <div class="chips">
+            Coba juga:
+            <button class="chip" type="button">naruto</button>
+            <button class="chip" type="button">one piece</button>
+            <button class="chip" type="button">isekai</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="sumber" aria-labelledby="sumber-h">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="sumber-h">Semua endpoint, per sumber</h2>
+          <p>Pilih sumber untuk melihat endpoint-nya. Bentuk respons sama di semuanya: <code>status</code> dan <code>data</code>. Klik kartu untuk membuka dokumentasi lengkap.</p>
+        </div>
+
+        <div class="explorer panel">
+          <div class="ex-tabs" role="tablist" aria-label="Sumber data">
+            <button type="button" role="tab" class="ex-tab src-otakudesu" data-src="otakudesu" aria-selected="true"><i class="dot"></i>Otakudesu<span class="ex-count"></span><em class="ex-state" data-state="otakudesu"></em></button>
+            <button type="button" role="tab" class="ex-tab src-samehadaku" data-src="samehadaku" aria-selected="false"><i class="dot"></i>Samehadaku<span class="ex-count"></span><em class="ex-state" data-state="samehadaku"></em></button>
+            <button type="button" role="tab" class="ex-tab src-gabungan" data-src="gabungan" aria-selected="false"><i class="dot"></i>Gabungan<span class="ex-count"></span></button>
+          </div>
+          <div class="ex-head">
+            <div>
+              <h3 id="exTitle"></h3>
+              <p id="exBlurb"></p>
+            </div>
+            <div class="ex-side">
+              <code id="exBase"></code>
+              <button class="btn btn-sm" type="button" id="probe">Cek status sumber</button>
+              <a class="ex-more" id="exDocs" href="/docs">Buka di dokumentasi →</a>
+            </div>
+          </div>
+          <p class="ex-note" id="exNote" role="status" aria-live="polite" hidden></p>
+          <div class="ex-grid" id="exGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="mulai" aria-labelledby="mulai-h">
+      <div class="wrap">
+        <div class="section-head">
+          <h2 id="mulai-h">Dari judul sampai link nonton dan unduh</h2>
+          <p>Setiap langkah memakai slug dari langkah sebelumnya. Contoh di bawah memakai alamat server ini.</p>
+        </div>
+
+        <ol class="steps">
+          <li class="step">
+            <div>
+              <h3>Cari judul</h3>
+              <p>Ambil <code>slug</code> dari hasil pertama.</p>
+            </div>
+            <div data-step="1"></div>
+          </li>
+          <li class="step">
+            <div>
+              <h3>Ambil detail dan episode</h3>
+              <p>Respons berisi <code>episodes[]</code>, plus <code>batch</code> dan <code>lengkap</code> untuk unduhan.</p>
+            </div>
+            <div data-step="2"></div>
+          </li>
+          <li class="step">
+            <div>
+              <h3>Buka halaman nonton</h3>
+              <p>Dapatkan server mirror, link unduh, dan slug episode berikutnya.</p>
+            </div>
+            <div data-step="3"></div>
+          </li>
+          <li class="step">
+            <div>
+              <h3>Ambil link unduh satu episode</h3>
+              <p>Link dikelompokkan per kualitas, lalu per penyedia file. Buka tab Hasil untuk melihat bentuk datanya.</p>
+            </div>
+            <div data-step="4"></div>
+          </li>
+          <li class="step">
+            <div>
+              <h3>Unduh seluruh episode sekaligus</h3>
+              <p>Pakai <code>batch</code> (atau <code>lengkap</code>) dari langkah 2. Nilainya <code>null</code> kalau anime itu tidak punya paket.</p>
+            </div>
+            <div data-step="5"></div>
+          </li>
+        </ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Kitsune API adalah proyek tidak resmi dan tidak berafiliasi dengan situs sumbernya. Seluruh judul, gambar, dan video milik pemegang haknya masing-masing. Gunakan dengan wajar dan hormati batas akses situs sumber.</p>
+      <nav class="foot-links" aria-label="Footer"><a href="/docs">Dokumentasi</a><a href="/docs#grup-samehadaku">Samehadaku</a><a href="/api/openapi.json">OpenAPI</a><a href="/health">Status</a></nav>
+    </div>
+  </footer>
+
+  <script src="/shared.js"></script>
+  <script src="/endpoints.js"></script>
+  <script src="/explorer.js"></script>
+  <script src="/home.js"></script>
+</body>
+</html>

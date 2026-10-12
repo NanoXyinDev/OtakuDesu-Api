@@ -1,0 +1,13 @@
+{
+  "name": "kitsune-api",
+  "version": "2.3.0",
+  "description": "API anime sub Indo (tidak resmi) lengkap dengan halaman web dan dokumentasi",
+  "main": "index.js",
+  "scripts": { "start": "node index.js" },
+  "dependencies": {
+    "axios": "^1.7.0",
+    "cheerio": "^1.0.0",
+    "express": "^4.19.0",
+    "https-proxy-agent": "^7.0.4"
+  }
+}

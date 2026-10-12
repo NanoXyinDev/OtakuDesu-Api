@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dokumentasi – Kitsune API</title>
+  <meta name="description" content="Referensi lengkap endpoint Kitsune API: parameter, contoh request, contoh respons, dan tombol coba langsung.">
+  <meta name="theme-color" content="#ff4d8d">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M4 4l8 6h8l8-6v12c0 7-6 12-12 12S4 23 4 16z' fill='%23ff4d8d' stroke='%231a1640' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preload" href="/fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <script>try{var t=localStorage.getItem("kitsune-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <a class="skip" href="#doc">Lewati ke konten</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="logo" href="/" aria-label="Kitsune API, beranda">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 4l8 6h8l8-6v12c0 7-6 12-12 12S4 23 4 16z" fill="#ff4d8d" stroke="#1a1640" stroke-width="2" stroke-linejoin="round"/><path d="M10 17.5l3 1.5M22 17.5l-3 1.5" stroke="#1a1640" stroke-width="2" stroke-linecap="round"/><path d="M14.5 23h3l-1.5 1.8z" fill="#1a1640"/></svg>
+        Kitsune <small>API</small>
+      </a>
+      <nav class="nav" aria-label="Utama">
+        <a class="hide-sm" href="/">Beranda</a>
+        <a href="/docs" aria-current="page">Dokumentasi</a>
+        <a class="hide-sm" href="/api/openapi.json">OpenAPI</a>
+        <a href="/account" data-account>Masuk</a>
+        <button class="icon-btn" type="button" data-theme-toggle></button>
+        <button class="icon-btn menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar" aria-label="Buka daftar endpoint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap docs">
+    <aside class="sidebar" id="sidebar" aria-label="Daftar isi">
+      <input type="search" id="filter" placeholder="Cari endpoint" aria-label="Cari endpoint" autocomplete="off">
+      <nav id="sideNav"></nav>
+    </aside>
+
+    <main class="doc" id="doc">
+      <section id="pengantar">
+        <h1>Dokumentasi API</h1>
+        <p class="intro">Semua endpoint memakai metode <code>GET</code> dan mengembalikan JSON. API key opsional: tanpa key kamu dihitung sebagai tamu dengan batas kecil. <a href="/account">Daftar</a> untuk mendapat key dan batas lebih besar, lalu kirim lewat header <code>X-API-Key</code>. Setiap respons membawa header <code>X-RateLimit-Limit</code>, <code>X-RateLimit-Remaining</code>, dan <code>X-RateLimit-Reset</code>.</p>
+
+        <div class="panel base-box">
+          <span>Alamat dasar</span>
+          <code data-base>https://…</code>
+          <button class="btn btn-sm" type="button" id="copyBase">Salin</button>
+        </div>
+      </section>
+
+      <section id="format">
+        <h2 class="group">Format respons</h2>
+        <p class="group-blurb">Respons sukses selalu membungkus hasil di <code>data</code>. Respons gagal berisi pesan yang menjelaskan masalahnya.</p>
+        <div id="formatCode"></div>
+      </section>
+
+      <section id="error">
+        <h2 class="group">Kode status</h2>
+        <p class="group-blurb">Kegagalan selalu berbentuk JSON dengan <code>status: false</code>.</p>
+        <table class="params" id="errorTable">
+          <thead><tr><th>Kode</th><th>Artinya</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section id="cache">
+        <h2 class="group">Cache dan header</h2>
+        <ul class="plain">
+          <li>Respons disimpan di memori server selama <code>CACHE_TTL</code> detik (bawaan 300). Respons dari cache membawa header <code>X-Cache: HIT</code>.</li>
+          <li><code>Cache-Control</code> diatur ke <code>public, s-maxage=300, stale-while-revalidate=60</code> supaya CDN seperti Vercel ikut menyimpan.</li>
+          <li><code>/api/stream</code> tidak di-cache karena URL embed bisa kedaluwarsa.</li>
+          <li>CORS terbuka: <code>Access-Control-Allow-Origin: *</code>, jadi bisa dipanggil langsung dari frontend.</li>
+        </ul>
+      </section>
+
+      <section id="konfigurasi">
+        <h2 class="group">Konfigurasi server</h2>
+        <p class="group-blurb">Semua variabel opsional. Di Vercel, isi lewat Settings, Environment Variables.</p>
+        <table class="params">
+          <thead><tr><th>Variabel</th><th>Bawaan</th><th>Fungsi</th></tr></thead>
+          <tbody>
+            <tr><td><code>PROXY_LIST</code></td><td class="where">kosong</td><td>Daftar proxy dipisah koma. Dipakai bergantian di setiap request. Wajib kalau situs sumber memblokir IP server.</td></tr>
+            <tr><td><code>TIMEOUT</code></td><td class="where">8000</td><td>Batas waktu satu request ke situs sumber, dalam milidetik.</td></tr>
+            <tr><td><code>CACHE_TTL</code></td><td class="where">300</td><td>Lama cache dalam detik. Isi 0 untuk mematikan.</td></tr>
+            <tr><td><code>BASE_URL</code></td><td class="where">situs sumber</td><td>Alamat situs yang di-scrape. Ganti kalau domainnya pindah.</td></tr>
+            <tr><td><code>NONCE_ACTION</code></td><td class="where">bawaan</td><td>ID action admin-ajax untuk nonce. Perbarui kalau /api/stream gagal.</td></tr>
+            <tr><td><code>STREAM_ACTION</code></td><td class="where">bawaan</td><td>ID action admin-ajax untuk URL embed.</td></tr>
+            <tr><td><code>PORT</code></td><td class="where">3000</td><td>Port saat dijalankan lokal.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <div id="endpoints"></div>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Kitsune API adalah proyek tidak resmi dan tidak berafiliasi dengan situs sumbernya. Gunakan dengan wajar dan hormati batas akses situs sumber.</p>
+      <nav class="foot-links" aria-label="Footer"><a href="/">Beranda</a><a href="/api/openapi.json">OpenAPI</a><a href="/health">Status</a></nav>
+    </div>
+  </footer>
+
+  <script src="/endpoints.js"></script>
+  <script src="/shared.js"></script>
+  <script src="/docs.js"></script>
+</body>
+</html>

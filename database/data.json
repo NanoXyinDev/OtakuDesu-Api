@@ -4,7 +4,7 @@
       "id": "9ef5aaae-080f-41fd-b4fa-71626ab51c5f",
       "email": "gamerprobayu@gmail.com",
       "name": "admin",
-      "role": "user",
+      "role": "admin",
       "passwordHash": "scrypt$Z9POM6UAvm42M+kOmO1Hxw==$WqmDj65G+E3iWaVRuqeTJk71esCObVOr9wlnmvQBc162r5iTHLStcDNjFlIM8mwpKswpQVtXNgqy356QI5JasA==",
       "emailVerified": false,
       "providers": {},

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 – Halaman tidak ditemukan | Kitsune API</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#ff4d8d">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M4 4l8 6h8l8-6v12c0 7-6 12-12 12S4 23 4 16z' fill='%23ff4d8d' stroke='%231a1640' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preload" href="/fonts/dela-gothic-one-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <script>try{var t=localStorage.getItem("kitsune-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Lewati ke konten</a>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="logo" href="/" aria-label="Kitsune API, beranda">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 4l8 6h8l8-6v12c0 7-6 12-12 12S4 23 4 16z" fill="#ff4d8d" stroke="#1a1640" stroke-width="2" stroke-linejoin="round"/><path d="M10 17.5l3 1.5M22 17.5l-3 1.5" stroke="#1a1640" stroke-width="2" stroke-linecap="round"/><path d="M14.5 23h3l-1.5 1.8z" fill="#1a1640"/></svg>
+        Kitsune <small>API</small>
+      </a>
+      <nav class="nav" aria-label="Utama">
+        <a href="/docs">Dokumentasi</a>
+        <a class="hide-sm" href="/api/openapi.json">OpenAPI</a>
+        <a href="/account" data-account>Masuk</a>
+        <button class="icon-btn" type="button" data-theme-toggle></button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="nf">
+    <section class="panel nf-card" aria-labelledby="judul">
+      <div class="nf-code" aria-hidden="true">
+        <span>4</span>
+        <svg class="nf-fox" viewBox="0 0 32 32"><path d="M4 4l8 6h8l8-6v12c0 7-6 12-12 12S4 23 4 16z" fill="#ff4d8d" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M10 17.5l3 1.5M22 17.5l-3 1.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14.5 23h3l-1.5 1.8z" fill="currentColor"/></svg>
+        <span>4</span>
+      </div>
+      <h1 id="judul">Si rubah tersesat.</h1>
+      <p>Alamat ini tidak cocok dengan halaman atau endpoint mana pun. Mungkin salah ketik, atau slug-nya sudah berubah.</p>
+      <code class="nf-path" id="nfPath"></code>
+
+      <form class="nf-search" id="nfForm" role="search">
+        <input id="nfQ" type="search" placeholder="Cari endpoint, mis. search" aria-label="Cari endpoint" autocomplete="off">
+        <button class="btn btn-primary btn-sm" type="submit">Cari</button>
+      </form>
+
+      <div class="cta-row">
+        <a class="btn btn-primary" href="/">Ke beranda</a>
+        <a class="btn" href="/docs">Buka dokumentasi</a>
+      </div>
+
+      <ul class="nf-links" aria-label="Endpoint populer">
+        <li><a href="/docs#search">/api/search</a></li>
+        <li><a href="/docs#ongoing">/api/ongoing</a></li>
+        <li><a href="/docs#sh-latest">/api/samehadaku/latest</a></li>
+        <li><a href="/docs#sh-search">/api/samehadaku/search</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="/shared.js"></script>
+  <script>
+    (function () {
+      var p = document.getElementById("nfPath");
+      p.textContent = "GET " + location.pathname + location.search;
+      document.getElementById("nfForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var q = document.getElementById("nfQ").value.trim();
+        location.href = "/docs" + (q ? "?q=" + encodeURIComponent(q) : "");
+      });
+    })();
+  </script>
+</body>
+</html>
